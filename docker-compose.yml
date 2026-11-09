@@ -3,12 +3,22 @@ services:
     build: .
     image: mailflare:local
     restart: unless-stopped
-    ports:
-      - "3000:3000"   # web app and JMAP
-      - "25:25"       # inbound SMTP (point your domain's MX here)
-    env_file: .env.docker
-    volumes:
-      - mailflare-data:/data
 
-volumes:
-  mailflare-data:
+    environment:
+      APP_URL: https://${DOMAIN}
+      PORT: "3000"
+      DATA_DIR: ${DATA_DIR}
+      SMTP_INBOUND_PORT: "0"
+      INBOUND_WEBHOOK_SECRET: ${INBOUND_WEBHOOK_SECRET}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      CF_TOKEN: ${CF_TOKEN}
+
+    volumes:
+      - /srv/docker/mailflare/data:/data
+
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
