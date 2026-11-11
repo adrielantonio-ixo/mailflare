@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
 
     environment:
-      APP_URL: https://${DOMAIN}
+      APP_URL: https://${APP_URL}
       PORT: "3000"
       DATA_DIR: ${DATA_DIR}
       SMTP_INBOUND_PORT: "0"
